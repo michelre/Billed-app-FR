@@ -48,7 +48,7 @@ export default class Login {
     PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
     document.body.style.backgroundColor="#fff"
   }
- 
+
   // not need to cover this function by tests
   checkIfUserExists = (user) => {
     if (this.firestore) {
@@ -65,7 +65,7 @@ export default class Login {
       })
       .catch(error => error)
     } else {
-      return null 
+      return null
     }
   }
 
@@ -77,7 +77,7 @@ export default class Login {
       .doc(user.email)
       .set({
         type: user.type,
-        name: user.email.split('@')[0] 
+        name: user.email.split('@')[0]
       })
       .then(() => console.log(`User with ${user.email} is created`))
       .catch(error => error)
@@ -85,4 +85,4 @@ export default class Login {
       return null
     }
   }
-} 
+}
