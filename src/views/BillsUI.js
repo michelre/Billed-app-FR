@@ -4,8 +4,8 @@ import LoadingPage from "./LoadingPage.js"
 import Actions from './Actions.js'
 import { bills } from '../fixtures/bills.js'
 
- 
-// Test 1 
+
+// Test 1
 const row = (bill) => {
   return (`
     <tr>
@@ -23,13 +23,13 @@ const row = (bill) => {
 
 // Test 2 (deja fait)
 const rows = (data) => {
-  return (data && data.length) ? data.sort((a, b) => ((b.date > a.date) ? 1 : -1)).map(bill => row(bill)).join("") : ""
+  return (data && data.length) ? data.sort((a, b) => b.date > a.date ? 1 : -1).map(bill => row(bill)).join("") : ""
 }
 
 
 
 export default ({ data: bills, loading, error }) => {
-  
+
   const modal = () => (`
     <div class="modal fade" id="modaleFile"  data-testid="modaleFile"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -52,7 +52,7 @@ export default ({ data: bills, loading, error }) => {
   } else if (error) {
     return ErrorPage(error)
   }
-  
+
   return (`
     <div class='layout'>
       ${VerticalLayout(120)}
