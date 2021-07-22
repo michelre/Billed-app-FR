@@ -27,14 +27,13 @@ export default class NewBill {
 
     errorMessage.innerHTML = "";
     if(file.type !== "image/jpeg" && file.type !== "image/png"){
-      console.log("Alerte, mauvais fichier") 
+      console.log("Alerte, mauvais fichier")
       let errorMessage = this.document.getElementById('errorMessage')
       errorMessage.innerHTML = "Vous devez choisir un fichier en JPEG, JPG, ou PNG."
       return false
-    } 
-    
+    }
+
     /* istanbul ignore next */
-    console.log(this.firestore.storage)
     this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
@@ -48,21 +47,19 @@ export default class NewBill {
 
 
   handleSubmit = e => {
+    e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    
+
     if(file.type !== "image/jpeg" && file.type !== "image/png"){
-      console.log("L'extension du justificatifs est incorrect") 
+      console.log("L'extension du justificatifs est incorrect")
       e.preventDefault();
       e.stopPropagation();
       let errorMessage = this.document.getElementById('errorMessage')
       errorMessage.innerHTML = "Vous devez choisir un fichier en JPEG, JPG, ou PNG."
       return false
     }
-    
-    e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
-  
+
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
@@ -76,15 +73,14 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-  
+
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
-    console.log('fileName', bill.fileName)
-    console.log('file Type', this.fileType)
   }
 
-  
+
   // not need to cover this function by tests
+  /* istanbul ignore next */
   createBill = (bill) => {
     if (this.firestore) {
       this.firestore
