@@ -10,7 +10,7 @@ export default class {
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
-    if (iconEye)iconEye.forEach(icon => {icon.addEventListener('click', (e) => this.handleClickIconEye(icon))})
+    if (iconEye && iconEye.length > 0) iconEye.forEach(icon => {icon.addEventListener('click', (e) => this.handleClickIconEye(icon))})
     new Logout({ document, localStorage, onNavigate })
   }
 
@@ -47,7 +47,6 @@ export default class {
             } catch(e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
               // log the error and return unformatted date in that case
-              console.log(e,'for',doc.data())
               return {
                 ...doc.data(),
                 date: doc.data().date,
@@ -56,7 +55,6 @@ export default class {
             }
           })
           .filter(bill => bill.email === userEmail)
-          console.log('length', bills.length)
         return bills
       })
       .catch(error => error)

@@ -17,7 +17,7 @@ import VerticalLayout from "../views/VerticalLayout"
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout (verticalLayout(120) should be highlighted", () => {
-    
+
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       const user = JSON.stringify({
         type: 'Employee'
@@ -46,7 +46,7 @@ describe("Given I am connected as an employee", () => {
   })
 })
 
- 
+
 
 describe('When I am on Bills page but it is loading', () => {
   test('Then, Loading page should be rendered', () => {
@@ -70,7 +70,7 @@ describe('When I am on Bills page but back-end send an error message', () => {
 
 
 
-// Bills container 
+// Bills container
 describe('When I am on Bills page and I on the button new Bill', () => {
   test('Then, I should be send to New Bill', () => {
     Object.defineProperty(window, 'localStorage', { value: localStorageMock })
@@ -102,13 +102,10 @@ describe('When I am on Bills page and I on the button new Bill', () => {
 
 describe('Given I am connected  on bills page as an employees', () => {
   test('Then, I can click on all eyeIcon', () => {
-    const url = '/fake_url'
     const html = BillsUI({data: bills})
     document.body.innerHTML = html
 
-    const onNavigate = (pathname) => {
-      //document.body.innerHTML = ROUTES({ pathname })
-    }
+    const onNavigate = (pathname) => {}
     const firestore = null
 
     Object.defineProperty(window, 'localStorage', { value: localStorageMock })
@@ -121,17 +118,33 @@ describe('Given I am connected  on bills page as an employees', () => {
       document, onNavigate, firestore, bills, localStorage: window.localStorage
     })
 
-    const handleClickIconEye = jest.fn() 
-    bill.handleClickIconEye = handleClickIconEye  
+    const handleClickIconEye = jest.fn()
+    bill.handleClickIconEye = handleClickIconEye
 
-    /*
-    iconEye.addEventListener('click', handleClickIconEye)
-    userEvent.click(iconEye)
-    */
     const iconEye = screen.getAllByTestId("icon-eye")[0]
     fireEvent.click(iconEye)
 
     expect(handleClickIconEye).toHaveBeenCalled()
+  })
+
+  test('Then, handleClickIconEye cannot be called when there is not bill', () => {
+    const html = BillsUI({data: []})
+    document.body.innerHTML = html
+
+    const onNavigate = (pathname) => {}
+    const firestore = null
+
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee'
+    }))
+    $.fn.modal = jest.fn();
+
+    new Bills({
+      document, onNavigate, firestore, bills, localStorage: window.localStorage
+    })
+
+    expect(screen.queryAllByTestId("icon-eye")).toEqual([])
   })
 })
 
@@ -157,18 +170,18 @@ describe('Given I am connected  on bills page as an employee ', () => {
         document, onNavigate, firestore, bills, localStorage: window.localStorage
       })
       $.fn.modal = jest.fn();
-      
+
       const eyeBtn = screen.getByTestId('modaleFile')
       const handleClickIconEye = jest.fn(() => bill.handleClickIconEye(eyeBtn));
       eyeBtn.addEventListener('click', handleClickIconEye)
-     
+
       userEvent.click(eyeBtn)
       //fireEvent.click(eye)
       expect(handleClickIconEye).toHaveBeenCalled()
 
       const modale = screen.getByTestId('modaleFile')
       expect(modale).toBeTruthy()
-      
+
       // Récuperer des éléments dans actions.js
     })
   })
